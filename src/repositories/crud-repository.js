@@ -27,9 +27,9 @@ class CrudRepository {
         
     }
 
-    async get(data){
+    async get(id){
        
-            const response =await this.model.findByPk(data);
+            const response =await this.model.findByPk(id);
             if(!response){
                 throw new AppError("the requested resource does not exist",StatusCodes.NOT_FOUND);
             }
@@ -44,10 +44,10 @@ class CrudRepository {
         
     }
 
-    async update(id,data){ //data->{key, value....}
+    async update(data,ID){ //data->{key, value....}
             const response =await this.model.update(data,{
                 where:{
-                    id:id
+                    id:ID
                 }
             });
             return response; 

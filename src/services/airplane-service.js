@@ -74,9 +74,22 @@ async function destroyAirplane(id){
   }
 }
 
+async function updateAirplane(data,ID){
+    try {
+      const airplane = await airplaneRepo.update(data,ID);
+      if(!airplane){
+        throw new AppError('the resource does not exist',StatusCodes.NOT_FOUND);
+      }
+      return airplane;
+    } catch (error) {
+        throw new AppError("cannot find the requested resource",StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
 module.exports={
     createAirplane,
     getAirplanes,
     getAirplane,
-    destroyAirplane
+    destroyAirplane,
+    updateAirplane
 }
