@@ -9,6 +9,9 @@ class CrudRepository {
 
     async create(data){
             const response =await this.model.create(data);
+            if(!response){
+              throw new AppError('input response is missing in the incoming request',StatusCodes.BAD_REQUEST)
+            }
             return response;
        
     }

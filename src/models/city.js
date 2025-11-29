@@ -17,7 +17,16 @@ module.exports = (sequelize, DataTypes) => {
     name:{
       type:DataTypes.STRING,
       allowNull:false,
-      unique:true
+      unique:true,
+      validate:{
+        is:{
+          args:/^[a-zA-Z ]+$/i,
+          msg:'name must contain only letters and spaces'
+        },
+        notEmpty:{
+          msg:'name cannot be empty'
+        }
+      }
     } 
   }, {
     sequelize,
