@@ -30,6 +30,33 @@ async function createCity (data){
         }
 }
 
+async function destroyCity(id){
+  try {
+    const city = await cityRepo.destroy(id);
+    return city;
+
+  } catch (error) {
+    if(error.statusCode == StatusCodes.NOT_FOUND){
+       throw new AppError("the requested resouce does not exist", StatusCodes.NOT_FOUND);
+          }
+    throw new AppError("cannot find the requested resource",StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
+async function updateCity(data,ID){
+    try {
+      const city = await cityRepo.update(data,ID);
+      if(!city){
+        throw new AppError('the resource does not exist',StatusCodes.NOT_FOUND);
+      }
+      return city;
+    } catch (error) {
+        throw new AppError("cannot find the requested resource",StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+}
+
 module.exports={
-    createCity
+    createCity,
+    destroyCity,
+    updateCity
 }

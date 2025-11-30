@@ -11,6 +11,16 @@ router.post('/',
                cityController.createCity
             );
 
+// api/v1/cities/:id  DELETE
+router.delete("/:id",
+   cityController.destroyCity
+)
+
+//api/v1/cities/:id  PATCH
+router.patch('/:id',
+   cityController.updateCity
+)
+
 // // api/v1/airplanes  GET
 // router.get('/',
 //            airplaneController.getAirplanes
@@ -22,15 +32,9 @@ router.post('/',
 //            airplaneController.getAirplane
 //          );
 
-// // api/v1/airplanes/:id  DELETE
-// router.delete("/:id",
-//    airplaneController.destroyAirplane
-// )
 
 
-// //api/v1/airplanes/:id  PATCH
-// router.patch('/:id',
-//    airplaneController.updateAirplane
-// )
+
+
 
 module.exports=router;

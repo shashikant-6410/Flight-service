@@ -25,6 +25,47 @@ async function createCity(req,res) {
     
 }
 
+async function destroyCity(req,res) {
+    try {
+        const city = await CityService.destroyCity(req.params.id);
+    SuccessResponse.data=city;
+    return res
+              .status(StatusCodes.OK)
+              .json(SuccessResponse)
+
+    } catch (error) {
+        ErrorResponse.error = error;
+        const statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+        return res
+                  .status(statusCode)
+                  .json(ErrorResponse)
+    }
+    
+}
+
+async function updateCity(req,res){
+    try {
+        const ID = req.params.id;
+        const Name=req.body.name;
+        const data={
+            name:Name
+        }
+       const city = await CityService.updateCity(data,ID);
+       SuccessResponse.data= city;
+       return res
+                 .status(StatusCodes.OK)
+                 .json(SuccessResponse);            
+
+    } catch (error) {
+        ErrorResponse.error = error;
+        return res
+                  .status(error.statusCode)
+                  .json(ErrorResponse);
+    }
+}
+
 module.exports={
-    createCity
+    createCity,
+    destroyCity,
+    updateCity
 }
