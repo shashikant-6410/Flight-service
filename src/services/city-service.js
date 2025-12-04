@@ -30,6 +30,21 @@ async function createCity (data){
         }
 }
 
+async function getCity(id) {
+  try {
+    const city =await cityRepo.get(id);
+    return city;
+    } catch (error) {
+       if(error.statusCode == StatusCodes.NOT_FOUND){
+        throw new AppError("the requested resouce does not exist", StatusCodes.NOT_FOUND);
+      }
+
+    throw new AppError('connot fetch the requested city', StatusCodes.INTERNAL_SERVER_ERROR);
+    
+  }
+  
+}
+
 async function destroyCity(id){
   try {
     const city = await cityRepo.destroy(id);
@@ -58,5 +73,6 @@ async function updateCity(data,ID){
 module.exports={
     createCity,
     destroyCity,
-    updateCity
-}
+    updateCity,
+    getCity
+  }

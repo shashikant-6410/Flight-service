@@ -21,11 +21,11 @@ router.patch('/:id',
    cityController.updateCity
 )
 
-// // api/v1/airplanes  GET
-// router.get('/',
-//            airplaneController.getAirplanes
+// api/v1/airplanes  GET
+router.get('/:id',
+           cityController.getCity
            
-//          );
+         );
 
 // // api/v1/airplanes/:id GET
 // router.get('/:id',

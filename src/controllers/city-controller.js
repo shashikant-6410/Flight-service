@@ -25,6 +25,27 @@ async function createCity(req,res) {
     
 }
 
+async function getCity(req,res) {
+    try {
+        const id = req.params.id;
+        const city = await CityService.getCity(id);
+
+        SuccessResponse.data=city;
+        return res
+                .status(StatusCodes.ACCEPTED)
+                .json(SuccessResponse)
+
+    } catch (error) {
+        ErrorResponse.error = error;
+        const statusCode = error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
+        return res
+                  .status(statusCode)
+                  .json(ErrorResponse)
+    }
+    
+    
+}
+
 async function destroyCity(req,res) {
     try {
         const city = await CityService.destroyCity(req.params.id);
@@ -67,5 +88,6 @@ async function updateCity(req,res){
 module.exports={
     createCity,
     destroyCity,
-    updateCity
+    updateCity,
+    getCity
 }
