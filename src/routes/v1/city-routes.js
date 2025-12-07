@@ -27,14 +27,5 @@ router.get('/:id',
            
          );
 
-// // api/v1/airplanes/:id GET
-// router.get('/:id',
-//            airplaneController.getAirplane
-//          );
-
-
-
-
-
 
 module.exports=router;
