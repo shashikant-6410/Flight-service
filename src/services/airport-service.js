@@ -1,16 +1,15 @@
 const { StatusCodes } = require('http-status-codes');
-const {AirplaneRepository}= require('../repositories');
+const {AirportRepository}= require('../repositories');
 const AppError = require('../utils/errors/app-error');
 
-const airplaneRepo = new AirplaneRepository();
+const airportRepo = new AirportRepository();
 
-async function createAirplane (data){
+async function createAirport (data){
         try {
-            const airplane  = await airplaneRepo.create(data);
-            return airplane;
+            const airport  = await airportRepo.create(data);
+            return airport;
        } catch (error) {
         
-         
          if(error.name=="SequelizeValidationError"){
             let explanation = [];
             error.errors.forEach((err) => {
@@ -24,21 +23,21 @@ async function createAirplane (data){
         }
 }
 
-async function getAirplanes() {
+async function getAirports() {
   try {
-    const airplanes= await airplaneRepo.getAll();
-    return airplanes;
+    const airports= await airportRepo.getAll();
+    return airports;
   } catch (error) {
-     throw new AppError("couldn't fetch all airplanes",StatusCodes.INTERNAL_SERVER_ERROR)
+     throw new AppError("couldn't fetch all airports",StatusCodes.INTERNAL_SERVER_ERROR)
   }
   
 }
 
 
-async function getAirplane(id){
+async function getAirport(id){
   try {
-    const airplane = await airplaneRepo.get(id);
-    return airplane; 
+    const airport = await airportRepo.get(id);
+    return airport; 
 
    } catch (error) {
 
@@ -51,10 +50,10 @@ async function getAirplane(id){
    
 }
 
-async function destroyAirplane(id){
+async function destroyAirport(id){
   try {
-    const airplane = await airplaneRepo.destroy(id);
-    return airplane;
+    const airport = await airportRepo.destroy(id);
+    return airport;
 
   } catch (error) {
     if(error.statusCode == StatusCodes.NOT_FOUND){
@@ -64,22 +63,22 @@ async function destroyAirplane(id){
   }
 }
 
-async function updateAirplane(data,ID){
+async function updateAirport(data,ID){
     try {
-      const airplane = await airplaneRepo.update(data,ID);
-      if(!airplane){
+      const airport = await airportRepo.update(data,ID);
+      if(!airport){
         throw new AppError('the resource does not exist',StatusCodes.NOT_FOUND);
       }
-      return airplane;
+      return airport;
     } catch (error) {
         throw new AppError("cannot find the requested resource",StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
 
 module.exports={
-    createAirplane,
-    getAirplanes,
-    getAirplane,
-    destroyAirplane,
-    updateAirplane
+    createAirport,
+    getAirports,
+    getAirport,
+    destroyAirport,
+    updateAirport
 }
