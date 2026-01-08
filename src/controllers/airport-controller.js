@@ -95,13 +95,13 @@ async function updateAirport(req,res){
     try {
         const ID = req.params.id;
         const Name = req.body.name;
-        const Code = req.body.code;
+        // const Code = req.body.code;
         const data={
             name:Name,
-            code:Code,
+            // code:Code,
         }
-       const airplane = await AirplaneService.updateAirplane(data,ID);
-       SuccessResponse.data= airplane;
+       const airport = await AirportService.updateAirport(data,ID);
+       SuccessResponse.data= airport;
        return res
                  .status(StatusCodes.OK)
                  .json(SuccessResponse);            

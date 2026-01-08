@@ -29,8 +29,8 @@ router.delete("/:id",
 
 
 //api/v1/airplanes/:id  PATCH
-// router.patch('/:id',
-//    airportController.updateAirport
-// )
+router.patch('/:id',
+   airportController.updateAirport
+)
 
 module.exports=router;
