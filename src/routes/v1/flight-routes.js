@@ -8,6 +8,7 @@ const router = express.Router();
 // api/v1/airports  POST
 router.post('/',
                FlightMiddlewares.validateCreateFlight,
+               FlightMiddlewares.compareTime,
                flightController.createFlight
             );
 

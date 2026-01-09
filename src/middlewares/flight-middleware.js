@@ -65,6 +65,21 @@ function validateCreateFlight(req,res,next){
     next();
 }
 
+//compares the arrival and departure time in epoch time 
+function compareTime( req,res,next){
+    let date1= new Date(req.body.arrivalTime);
+    let date2= new Date(req.body.departureTime);
+    if(date1 < date2){
+        ErrorResponse.message='Something went wrong while creating the FLIGHT';
+        ErrorResponse.error= new AppError(["invalid time - departure time is greater than arrival time "],StatusCodes.BAD_REQUEST)
+        return res
+                  .status(StatusCodes.BAD_REQUEST)
+                  .json(ErrorResponse)
+    }
+  next();
+}
+
 module.exports={
-    validateCreateFlight
+    validateCreateFlight,
+    compareTime
 }
