@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const {FlightRepository}= require('../repositories');
 const AppError = require('../utils/errors/app-error');
-const { Op } = require('sequelize');
+const { Op, DATE } = require('sequelize');
 
 const flightRepo = new FlightRepository();
 
@@ -26,13 +26,20 @@ async function createFlight (data){
 
 async function getAllFlights (query){
 
+
       let customFilter={};
+      let sortFilter=[];
+      let endingTripTime=" 23:59:00";
+
       //trips='DEL-MUM'
       if(query.trips){
          [departureAirportId,arrivalAirportId]= query.trips.split("-");
          customFilter.departureAirportId=departureAirportId;
          customFilter.arrivalAirportId=arrivalAirportId;
          //add check for the same arrival and departure airport Id
+         if(customFilter.departureAirportId == customFilter.arrivalAirportId){
+            throw new AppError("can't have same airportID for departure and arrival",StatusCodes.BAD_REQUEST)
+         }
       }
          
        if(query.price){
@@ -47,14 +54,32 @@ async function getAllFlights (query){
             [Op.gte]:query.travellers
         }
        }
+       
+       //tripDate="YYYY-MM-DD"
+       if(query.tripDate){
+        console.log(query.tripDate);
+        customFilter.departureTime={
+            [Op.between]:[query.tripDate,query.tripDate+endingTripTime]
+         }
+        }  
+      
+
+        //sort=departureTime_ASC,price_DESC
+        if(query.sort){
+            const params = query.sort.split(',');
+            console.log(params);
+            let sortFilters = params.map((param)=> param.split('_'));
+            sortFilter = sortFilters;
+            console.log(sortFilter)
+        }
 
         try {
-            const flight  = await flightRepo.getAllFlights(customFilter);
+            const flight  = await flightRepo.getAllFlights(customFilter,sortFilter);
             return flight;
        } catch (error) {
         throw new AppError("invalid parameter",StatusCodes.ACCEPTED);
        }
- }
+}
 
 
 module.exports={

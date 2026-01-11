@@ -10,10 +10,11 @@ class FlightRepository extends CrudRepository{
     }
 
     //any other querey other than CRUD can be written here
-    async getAllFlights(filters) {
+    async getAllFlights(filters,sort) {
         try {
             const flight= await Flight.findAll({
-                where:filters
+                where:filters,
+                order:sort
             })
             return flight;
         } catch (error) {
