@@ -1,6 +1,7 @@
+const {Sequelize} = require('sequelize');
 const CrudRepository = require('./crud-repository');
 
-const {Flight} =require('../models');
+const {Flight,Airport,Airplane} =require('../models');
 const AppError = require('../utils/errors/app-error');
 const { StatusCodes } = require('http-status-codes');
 
@@ -14,7 +15,35 @@ class FlightRepository extends CrudRepository{
         try {
             const flight= await Flight.findAll({
                 where:filters,
-                order:sort
+                order:sort,
+
+                //custom join in sequelize is done with "include"
+
+                include:[
+                    {
+                        //by default sequelize takes primary key as association column
+                        model:Airplane,
+                        required:true, //makes inner outer join to inner join
+                        as:"airplaneDetail"
+                    },
+                    {
+                        model:Airport,
+                        required:true,
+                        as:"departureAirport",
+                        //on is used to explicitly tell sequelize to take col1 as association column not primary key
+                        on:{
+                            col1: Sequelize.where(Sequelize.col("Flight.departureAirportId"), "=", Sequelize.col("departureAirport.code")) 
+                        }
+                    },
+                    {
+                       model:Airport,
+                        required:true,
+                        as:"arrivalAirport",
+                        on:{
+                            col1: Sequelize.where(Sequelize.col("Flight.arrivalAirportId"), "=", Sequelize.col("arrivalAirport.code")) 
+                        }
+                    }
+            ]
             })
             return flight;
         } catch (error) {
