@@ -15,6 +15,11 @@ router.post('/',
 // api/v1/flights?  GET
 router.get('/',
                flightController.getAllFlights
-            );          
+            );     
+            
+// api/v1/flights/:id  GET
+router.get('/:id',
+               flightController.getFlight
+            );              
 
 module.exports=router;
