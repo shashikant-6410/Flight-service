@@ -79,7 +79,19 @@ function compareTime( req,res,next){
   next();
 }
 
+function validateUpdateSeats(req,res,next){
+    if(!req.body || !req.body.seats){
+        ErrorResponse.message='Something went wrong while updating the flight seats';
+        ErrorResponse.error= new AppError(["seats not found in the incoming request"],StatusCodes.BAD_REQUEST)
+        return res
+                  .status(StatusCodes.BAD_REQUEST)
+                  .json(ErrorResponse)
+    }
+    next();
+}
+
 module.exports={
     validateCreateFlight,
-    compareTime
+    compareTime,
+    validateUpdateSeats
 }

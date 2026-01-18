@@ -4,6 +4,8 @@ const CrudRepository = require('./crud-repository');
 const {Flight,Airport,Airplane} =require('../models');
 const AppError = require('../utils/errors/app-error');
 const { StatusCodes } = require('http-status-codes');
+const db = require('../models');
+const {addRowLockOnFlights}= require('./queries');
 
 class FlightRepository extends CrudRepository{
     constructor(){
@@ -50,6 +52,19 @@ class FlightRepository extends CrudRepository{
             throw new AppError('cannot get flight',StatusCodes.BAD_REQUEST)
         }
     }
+
+    async updateRemainingSeats(flightId,seats,dec = 1) {
+        await db.sequelize.query(addRowLockOnFlights(flightId));
+        const flight = await Flight.findByPk(flightId);
+        if(parseInt(dec)){
+            await flight.decrement('totalSeats', {by:seats});
+        } else {
+            await flight.increment('totalSeats',{by:seats});
+        }
+        return flight;
+    }
+
+
 
 }
 
