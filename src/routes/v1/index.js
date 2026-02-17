@@ -17,6 +17,6 @@ router.use('/airports',airportRoute )
 
 router.use('/flights', flightRoute)
 
-// router.get('/info',info_controller.info);
+router.get('/info',info_controller.info);
 
 module.exports=router;

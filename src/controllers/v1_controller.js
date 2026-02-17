@@ -1,7 +1,7 @@
-const {statusCodes} = require('http-status-codes');
+const {StatusCodes} = require('http-status-codes');
 
 const info = (req,res)=>{
-    return res.status(statusCodes.ok).json({
+    return res.status(StatusCodes.OK).json({
         "success":"true",
         "message":"it's working",
         "error":{},
